@@ -2,6 +2,7 @@ var Twit = require("twit");
 var config = require("./config");
 
 var T = new Twit({ config });
+var stream = T.stream('user');
 
 T.get("search/tweets", { q: "banana since:2011-11-11", count: 100 }, gotData);
 
@@ -45,9 +46,17 @@ gotData = (err, data, response) => {
 
 T.post('statuses/update', newTweet, gotData);
 
-tweetIt = () => {
+tweetIt = (msg) => {
     let rand = Math.floor(Math.random()*2100);
 
-    T.post('statuses/update', tweet + ' '+ rand, gotData);
+    T.post('statuses/update', msg, gotData);
 
+}
+
+stream.on('follow', followed);
+
+followed = (e) => {
+    let name = e.source.name;
+    let screenName = e.source.screen_name;
+    tweetIt('.@'+screenName+ ' do you like bots');
 }
