@@ -10,9 +10,44 @@ var params = {
     count: 2
 };
 
+var newTweet = {
+    status: '#codingrainbow for node.js'
+};
+
 function gotData(err, data, response){
     let tweets = data.statuses;
     for( let i=0; i<tweets.length;i++){
         console.log(tweets[i].text);
     }
+}
+
+T.post('statuses/update',newTweet, tweeted);
+
+T.get('search/tweets', params, gotData);
+
+tweeeted = (err, data, response) => {
+    console.log(data);
+    if(err){
+        console.log('error: ' +err);
+    }
+    else {
+        console.log('correct');
+    }
+};
+
+gotData = (err, data, response) => {
+    let tweet = data.statuses;
+    for( let i=0; i<tweet.length;i++){
+        console.log(tweet[i].text);
+
+    }
+};
+
+T.post('statuses/update', newTweet, gotData);
+
+tweetIt = () => {
+    let rand = Math.floor(Math.random()*2100);
+
+    T.post('statuses/update', tweet + ' '+ rand, gotData);
+
 }
