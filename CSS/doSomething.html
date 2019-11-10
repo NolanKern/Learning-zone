@@ -1,0 +1,531 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: "Raleway";
+        font-weight: 900;
+        -webkit-perspective: 800px;
+        perspective: 800px;
+        background: linear-gradient(to bottom, #fff 50%, #181047 50%);
+        overflow: hidden;
+      }
+      body .board {
+        width: 600px;
+        height: 400px;
+        min-width: 600px;
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25%;
+        grid-template-rows: 25% 25% 25% 25%;
+        position: relative;
+        background: #ededec;
+        box-shadow: inset 0 0 0 2px #181047;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transform: rotateX(10deg);
+        transform: rotateX(10deg);
+        padding: 20px;
+      }
+      body .board:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 50px;
+        bottom: -50px;
+        box-shadow: inset 2px 0 0 #181047, inset -2px 0 0 #181047,
+          0 0px 0 0 #181047, 0 4px 0 0 #181047;
+        -webkit-transform-origin: top;
+        transform-origin: top;
+        -webkit-transform: rotateX(-50deg);
+        transform: rotateX(-50deg);
+        background: #ededec;
+      }
+      body .board .wrap {
+        position: relative;
+      }
+      body .board .wrap input {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 999;
+      }
+      body .board .wrap .button {
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        z-index: 3;
+        position: absolute;
+        transition: 0.2s ease-in-out;
+      }
+      body .board .wrap h1 {
+        font-size: 14px;
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+        width: 120px;
+        background: #fff;
+        padding: 5px;
+        color: #181047;
+        box-shadow: 0 0 0 2px #181047;
+        text-align: center;
+        text-transform: uppercase;
+        display: inline-block;
+      }
+      body .board .wrap h1:before {
+        content: "";
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #181047;
+        left: 2.5px;
+        top: 2.5px;
+        border-radius: 100%;
+        box-shadow: 122px 0 0 #181047, 122px 18px 0 #181047, 0px 18px 0 #181047;
+      }
+      body .board .wrap:nth-of-type(11) {
+        display: none;
+      }
+      body .board .wrap:nth-of-type(10) {
+        grid-column: 2 / span 2;
+      }
+      body .board .wrap:nth-of-type(10) input:checked ~ .button {
+        -webkit-transform: translateX(-50%) translateY(calc(-50% + 5px));
+        transform: translateX(-50%) translateY(calc(-50% + 5px));
+        box-shadow: 0 0 0 2px #0051fb, 0 0px 0 2px #0051fb, 0 7px 0 8px #fff,
+          0 7px 0 10px #181047;
+        z-index: 999;
+      }
+      body .board .wrap:nth-of-type(10) input:checked ~ .button:before {
+        -webkit-transform: rotateX(-10deg) translateZ(20px);
+        transform: rotateX(-10deg) translateZ(20px);
+        opacity: 1;
+        z-index: 998;
+        height: 100vh;
+        width: 100vw;
+      }
+      body .board .wrap:nth-of-type(10) input:checked ~ .button:after {
+        -webkit-transform: rotateX(-10deg) translateZ(20px);
+        transform: rotateX(-10deg) translateZ(20px);
+        opacity: 1;
+        z-index: 999;
+        height: 50vh;
+        width: 50vw;
+      }
+      body .board .wrap:nth-of-type(10) .button {
+        width: 100px;
+        height: 30px;
+        position: absolute;
+        border-radius: 0%;
+        box-shadow: 0 0 0 2px #0051fb, 0 5px 0 2px #0051fb, 0 12px 0 8px #fff,
+          0 12px 0 10px #181047;
+        margin-top: -30px;
+        background: repeating-linear-gradient(
+            45deg,
+            #0051fb,
+            #0051fb 2px,
+            transparent 2px,
+            transparent 4px
+          ),
+          #fff;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+      }
+      body .board .wrap:nth-of-type(10) .button:before {
+        content: "";
+        position: absolute;
+        background: #0051fb;
+        height: 0;
+        width: 0;
+        margin-left: calc(-50vw + 50%);
+        margin-top: calc(-50vh + 50%);
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transform: rotateX(-10deg) translateZ(-20px);
+        transform: rotateX(-10deg) translateZ(-20px);
+        top: -150%;
+        box-shadow: 0 0 0 500px #0051fb;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+      body .board .wrap:nth-of-type(10) .button:after {
+        content: "22 DEAD IN SCHOOL SHOOTING";
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transform: rotateX(-10deg) translateZ(20px);
+        transform: rotateX(-10deg) translateZ(20px);
+        top: 0%;
+        left: -50%;
+        width: 0;
+        height: 0;
+        box-shadow: 0 0 0 500px #0051fb;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+      body .board .wrap:nth-of-type(10) h1 {
+        font-size: 0px;
+        background: transparent;
+        box-shadow: none;
+        width: 230px;
+        bottom: 10px;
+        margin-left: -10px;
+      }
+      body .board .wrap:nth-of-type(10) h1:after {
+        content: "THOUGHTS AND PRAYERS";
+        font-size: 14px;
+        background: #fff;
+        padding: 5px 20px;
+        box-shadow: 0 0 0 2px #181047;
+      }
+      body .board .wrap:nth-of-type(10) h1:before {
+        content: "";
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #181047;
+        left: 17px;
+        top: 2.5px;
+        border-radius: 100%;
+        box-shadow: 202px 0 0 #181047, 202px 18px 0 #181047, 0px 18px 0 #181047;
+      }
+      body .board .wrap:nth-of-type(1) input:checked ~ .button,
+      body .board .wrap:nth-of-type(8) input:checked ~ .button,
+      body .board .wrap:nth-of-type(15) input:checked ~ .button {
+        -webkit-transform: translateX(-50%) translateY(calc(-50% + 5px));
+        transform: translateX(-50%) translateY(calc(-50% + 5px));
+        box-shadow: 0 0 0 2px #0051fb, 0 0px 0 2px #0051fb, 0 7px 0 8px #fff,
+          0 7px 0 10px #181047;
+      }
+      body .board .wrap:nth-of-type(1) .button,
+      body .board .wrap:nth-of-type(8) .button,
+      body .board .wrap:nth-of-type(15) .button {
+        width: 30px;
+        height: 20px;
+        position: absolute;
+        border-radius: 100%;
+        box-shadow: 0 0 0 2px #0051fb, 0 5px 0 2px #0051fb, 0 12px 0 8px #fff,
+          0 12px 0 10px #181047;
+        margin-top: -30px;
+        background: repeating-linear-gradient(
+            45deg,
+            #0051fb,
+            #0051fb 2px,
+            transparent 2px,
+            transparent 4px
+          ),
+          #fff;
+      }
+      body .board .wrap:nth-of-type(3) input:checked ~ .button,
+      body .board .wrap:nth-of-type(12) input:checked ~ .button {
+        -webkit-transform: translateX(-50%) translateY(calc(-50% + 5px));
+        transform: translateX(-50%) translateY(calc(-50% + 5px));
+        box-shadow: 0 0 0 2px #0051fb, 0 0px 0 2px #0051fb, 0 7px 0 8px #fff,
+          0 7px 0 10px #181047;
+      }
+      body .board .wrap:nth-of-type(3) .button,
+      body .board .wrap:nth-of-type(12) .button {
+        width: 60px;
+        height: 20px;
+        position: absolute;
+        border-radius: 0%;
+        box-shadow: 0 0 0 2px #0051fb, 0 5px 0 2px #0051fb, 0 12px 0 8px #fff,
+          0 12px 0 10px #181047;
+        margin-top: -30px;
+        background: repeating-linear-gradient(
+            45deg,
+            #0051fb,
+            #0051fb 2px,
+            transparent 2px,
+            transparent 4px
+          ),
+          #fff;
+      }
+      body .board .wrap:nth-of-type(14) input:checked ~ .button,
+      body .board .wrap:nth-of-type(5) input:checked ~ .button {
+        -webkit-transform: translateX(-50%) translateY(calc(-50% + 5px));
+        transform: translateX(-50%) translateY(calc(-50% + 5px));
+        box-shadow: 0 0 0 2px #0051fb, 0 0px 0 2px #0051fb, 0 7px 0 8px #fff,
+          0 7px 0 10px #181047;
+      }
+      body .board .wrap:nth-of-type(14) .button,
+      body .board .wrap:nth-of-type(5) .button {
+        width: 30px;
+        height: 20px;
+        position: absolute;
+        border-radius: 0%;
+        box-shadow: 0 0 0 2px #0051fb, 0 5px 0 2px #0051fb, 0 12px 0 8px #fff,
+          0 12px 0 10px #181047;
+        margin-top: -30px;
+        background: repeating-linear-gradient(
+            45deg,
+            #0051fb,
+            #0051fb 2px,
+            transparent 2px,
+            transparent 4px
+          ),
+          #fff;
+      }
+      body .board .wrap:nth-of-type(2) input:checked ~ .button,
+      body .board .wrap:nth-of-type(13) input:checked ~ .button,
+      body .board .wrap:nth-of-type(4) input:checked ~ .button,
+      body .board .wrap:nth-of-type(6) input:checked ~ .button {
+        -webkit-transform: translateX(calc(-50% + 68px)) translateZ(1px);
+        transform: translateX(calc(-50% + 68px)) translateZ(1px);
+      }
+      body .board .wrap:nth-of-type(2) input:checked ~ .button:before,
+      body .board .wrap:nth-of-type(13) input:checked ~ .button:before,
+      body .board .wrap:nth-of-type(4) input:checked ~ .button:before,
+      body .board .wrap:nth-of-type(6) input:checked ~ .button:before {
+        margin-left: -66px;
+      }
+      body .board .wrap:nth-of-type(2) .button,
+      body .board .wrap:nth-of-type(13) .button,
+      body .board .wrap:nth-of-type(4) .button,
+      body .board .wrap:nth-of-type(6) .button {
+        width: 10px;
+        height: 30px;
+        position: absolute;
+        border-radius: 0%;
+        box-shadow: 0 0 0 2px #0051fb, 0 5px 0 2px #0051fb;
+        margin-left: -35px;
+        margin-top: -40px;
+        background: repeating-linear-gradient(
+            45deg,
+            #0051fb,
+            #0051fb 2px,
+            transparent 2px,
+            transparent 4px
+          ),
+          #fff;
+        z-index: 9;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transform: translateZ(1px);
+        transform: translateZ(1px);
+      }
+      body .board .wrap:nth-of-type(2) .button:before,
+      body .board .wrap:nth-of-type(13) .button:before,
+      body .board .wrap:nth-of-type(4) .button:before,
+      body .board .wrap:nth-of-type(6) .button:before {
+        content: "";
+        position: absolute;
+        width: 90px;
+        top: 10px;
+        left: -5px;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          #fff 37%,
+          #181047 37%,
+          #181047 45%,
+          #fff 45%
+        );
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transform: translateZ(-1px);
+        transform: translateZ(-1px);
+        box-shadow: 0 0 0 2px #181047, inset 0 0 0 5px #fff;
+        transition: 0.2s ease-in-out;
+      }
+      body .board .wrap:nth-of-type(4) input:checked ~ .button,
+      body .board .wrap:nth-of-type(6) input:checked ~ .button {
+        -webkit-transform: translateY(0%) translateX(calc(-50% - 65px))
+          translateZ(1px);
+        transform: translateY(0%) translateX(calc(-50% - 65px)) translateZ(1px);
+      }
+      body .board .wrap:nth-of-type(4) input:checked ~ .button:before,
+      body .board .wrap:nth-of-type(6) input:checked ~ .button:before {
+        margin-left: 70px;
+      }
+      body .board .wrap:nth-of-type(4) .button,
+      body .board .wrap:nth-of-type(6) .button {
+        margin-left: 40px;
+      }
+      body .board .wrap:nth-of-type(4) .button:before,
+      body .board .wrap:nth-of-type(6) .button:before {
+        left: -75px;
+      }
+      body .board .wrap:nth-of-type(7),
+      body .board .wrap:nth-of-type(9),
+      body .board .wrap:nth-of-type(16) {
+        -webkit-perspective: 100px;
+        perspective: 100px;
+      }
+      body .board .wrap:nth-of-type(7) input:checked ~ .button,
+      body .board .wrap:nth-of-type(9) input:checked ~ .button,
+      body .board .wrap:nth-of-type(16) input:checked ~ .button {
+        -webkit-transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(20deg);
+        transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(20deg);
+      }
+      body .board .wrap:nth-of-type(7) input:checked ~ .button:before,
+      body .board .wrap:nth-of-type(9) input:checked ~ .button:before,
+      body .board .wrap:nth-of-type(16) input:checked ~ .button:before {
+        -webkit-transform: translateZ(-10px) rotate(-20deg) translateX(3.75px)
+          translateY(1px);
+        transform: translateZ(-10px) rotate(-20deg) translateX(3.75px)
+          translateY(1px);
+      }
+      body .board .wrap:nth-of-type(7) .button,
+      body .board .wrap:nth-of-type(9) .button,
+      body .board .wrap:nth-of-type(16) .button {
+        width: 5px;
+        height: 30px;
+        position: absolute;
+        border-radius: 50px 50px 0 0;
+        box-shadow: 0 0 0 2px #0051fb;
+        margin-left: 0px;
+        margin-top: -35px;
+        background: #fff;
+        z-index: 9;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+        -webkit-transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(-20deg);
+        transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(-20deg);
+      }
+      body .board .wrap:nth-of-type(7) .button:before,
+      body .board .wrap:nth-of-type(9) .button:before,
+      body .board .wrap:nth-of-type(16) .button:before {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        width: 30px;
+        height: 27.5px;
+        background: #0051fb;
+        box-shadow: 0 1px 0 3px #181047, inset 0 0 0 9px #fff;
+        border-radius: 100%;
+        -webkit-transform: translateZ(-10px) rotate(20deg) translateX(-3.5px);
+        transform: translateZ(-10px) rotate(20deg) translateX(-3.5px);
+        left: -12.5px;
+        top: 27.5px;
+        transition: 0.2s ease-in-out;
+      }
+      body .board .wrap:nth-of-type(16) input:checked ~ .button {
+        -webkit-transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(-20deg);
+        transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(-20deg);
+      }
+      body .board .wrap:nth-of-type(16) input:checked ~ .button:before {
+        -webkit-transform: translateZ(-10px) rotate(20deg) translateX(-4px)
+          translateY(-1px);
+        transform: translateZ(-10px) rotate(20deg) translateX(-4px)
+          translateY(-1px);
+      }
+      body .board .wrap:nth-of-type(16) .button {
+        -webkit-transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(20deg);
+        transform: rotateX(-50deg) translateX(-50%) translateY(-50%)
+          rotate(20deg);
+      }
+      body .board .wrap:nth-of-type(16) .button:before {
+        -webkit-transform: translateZ(-10px) rotate(-20deg) translateX(3.5px);
+        transform: translateZ(-10px) rotate(-20deg) translateX(3.5px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board">
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+      <div class="wrap">
+        <input type="checkbox" />
+        <div class="button"></div>
+        <h1>Do Something</h1>
+      </div>
+    </div>
+  </body>
+</html>
